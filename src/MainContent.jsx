@@ -4,19 +4,25 @@ import ClaudeRecipe from "./components/ClaudeRecipe"
 
 export default function MainContent() {
     const [ingredients, setIngredients] = React.useState([])
-    const [recipeShown, setRecipeShown] = React.useState(false)
+    const [recipe, setRecipe] = React.useState("")
     const recipeSection = useRef(null)
 
+    async function getRecipe() {
+        const response = await fetch("/.netlify/functions/get-recipe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ingredients }),
+        })
+      
+        const data = await response.json()
+        setRecipe(data.recipe)
+      }
+      
     React.useEffect(() => {
         if (recipeSection.current !== null) {
             recipeSection.current.scrollIntoView({behavior: "smooth"})   
         }
-    }, [recipeShown])
-
-    async function getRecipe() {
-        const recipeMarkdown = await getRecipeFromMistral(ingredients)
-        console.log(recipeMarkdown)
-    }
+    }, [recipe])
 
     function addIngredient(formData) {
         const newIngredient = formData.get("ingredient")
@@ -47,7 +53,7 @@ export default function MainContent() {
                 />
             }
 
-            {recipeShown && <ClaudeRecipe />}
+            {recipe && <ClaudeRecipe recipe = {recipe} />}
         </main>
     )
 }

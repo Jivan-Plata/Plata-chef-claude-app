@@ -1,35 +1,40 @@
-export default function ClaudeRecipe() {
+import ReactMarkdown from "react-markdown"
+
+export default function ClaudeRecipe(props) {
     return (
-        <section>
-            <h2 className="font-semibold text-2xl">Chef Claude Recommends:</h2>
-            <article className="text-[#475467] leading-8 text-lg font-normal" aria-live="polite">
-                <p>Based on the ingredients you have available, I would recommend making a simple a delicious <strong>Beef Bolognese Pasta</strong>. Here is the recipe:</p>
-                <h3>Beef Bolognese Pasta</h3>
-                <strong className="block mt-12 mb-4">Ingredients:</strong>
-                <ul className="list-disc list-inside space-y-4">
-                    <li>1 lb. ground beef</li>
-                    <li>1 onion, diced</li>
-                    <li>3 cloves garlic, minced</li>
-                    <li>2 tablespoons tomato paste</li>
-                    <li>1 (28 oz) can crushed tomatoes</li>
-                    <li>1 cup beef broth</li>
-                    <li>1 teaspoon dried oregano</li>
-                    <li>1 teaspoon dried basil</li>
-                    <li>Salt and pepper to taste</li>
-                    <li>8 oz pasta of your choice (e.g., spaghetti, penne, or linguine)</li>
-                </ul>
-                <strong class = "block mt-12 mb-4"> Instructions: </strong>
-                <ol className="list-decimal list-inside space-y-4">
-                    <li>Bring a large pot of salted water to a boil for the pasta.</li>
-                    <li>In a large skillet or Dutch oven, cook the ground beef over medium-high heat, breaking it up with a wooden spoon, until browned and cooked through, about 5-7 minutes.</li>
-                    <li>Add the diced onion and minced garlic to the skillet and cook for 2-3 minutes, until the onion is translucent.</li>
-                    <li>Stir in the tomato paste and cook for 1 minute.</li>
-                    <li>Add the crushed tomatoes, beef broth, oregano, and basil. Season with salt and pepper to taste.</li>
-                    <li>Reduce the heat to low and let the sauce simmer for 15-20 minutes, stirring occasionally, to allow the flavors to meld.</li>
-                    <li>While the sauce is simmering, cook the pasta according to the package instructions. Drain the pasta and return it to the pot.</li>
-                    <li>Add the Bolognese sauce to the cooked pasta and toss to combine.</li>
-                    <li>Serve hot, garnished with additional fresh basil or grated Parmesan cheese if desired.</li>
-                </ol>
+        <section className="text-[#475467] leading-8 text-lg font-normal" aria-live="polite">
+            <h2 className="font-semibold text-2xl text-black mb-4">Chef Claude Recommends:</h2>
+            <article aria-live="polite">
+                <ReactMarkdown
+                    components={{
+                        // 1. Style the main recipe title (h3 or h2 depending on AI output)
+                        h3: ({node, ...props}) => <h3 className="font-bold text-xl text-black mt-8 mb-4" {...props} />,
+                        
+                        // 2. Ingredients List (Unordered)
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-4 mb-8 ml-4" {...props} />,
+
+                        // 3. Instructions List (Ordered)
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-4 mb-8 ml-4" {...props} />,
+
+                        // 4. List Items: The "pl-2" gives just enough breathing room
+                        li: ({node, ...props}) => <li className="pl-2" {...props} />,
+
+                        // 5. CRITICAL FIX: Paragraphs inside lists
+                        // This checks if a paragraph is inside a list item. If so, it renders as a <span> 
+                        // to prevent the "new line" block behavior.
+                        p: ({node, ...props}) => {
+                            if (node.children[0] && node.children[0].tagName === "strong") {
+                                return <span className="block mb-2" {...props} /> 
+                            }
+                            return <p className="mb-4 inline-block" {...props} />
+                        },
+                        
+                        // 6. Strong tags (Headings like "Ingredients:" or "Instructions:")
+                        strong: ({node, ...props}) => <strong className="font-bold text-black" {...props} />
+                    }}
+                >
+                    {props.recipe}
+                </ReactMarkdown>
             </article>
         </section>
     )
