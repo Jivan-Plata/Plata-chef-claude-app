@@ -5,7 +5,7 @@ import './App.css'
 export default function App() {
   return (
 
-    <div id = "container">
+    <div className = "w-full max-w-3xl flex flex-col justify-center items-center min-h-screen mx-auto">
       <Header />
       <MainContent />
     </div>

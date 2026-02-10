@@ -1,12 +1,23 @@
-import React from "react"
+import React, { useRef } from "react"
+import IngredientsList from "./components/IngredientsList"
+import ClaudeRecipe from "./components/ClaudeRecipe"
+import { getRecipeFromMistral } from "./ai"
 
 export default function MainContent() {
-
     const [ingredients, setIngredients] = React.useState([])
+    const [recipeShown, setRecipeShown] = React.useState(false)
+    const recipeSection = useRef(null)
 
-    const ingredientsListItems = ingredients.map(ingredient => (
-        <li key={ingredient}>{ingredient}</li>
-    ))
+    React.useEffect(() => {
+        if (recipeSection.current !== null) {
+            recipeSection.current.scrollIntoView({behavior: "smooth"})   
+        }
+    }, [recipeShown])
+
+    async function getRecipe() {
+        const recipeMarkdown = await getRecipeFromMistral(ingredients)
+        console.log(recipeMarkdown)
+    }
 
     function addIngredient(formData) {
         const newIngredient = formData.get("ingredient")
@@ -14,27 +25,30 @@ export default function MainContent() {
     }
 
     return (
-        <main>
-            <form action={addIngredient} className="add-ingredient-form">
+        <main className="bg-[#fafaf8] py-[clamp(2rem,2vw+1.25rem,3rem)] px-[clamp(2rem,4vw+1rem,4rem)] rounded-b-xl w-full flex flex-col gap-8">
+
+            <form action={addIngredient} className="flex justify-between flex-wrap gap-8 w-full">
+
                 <input
+                    className="rounded-md border border-gray-300 shadow-sm grow p-3.5"
                     type="text"
                     placeholder="e.g. oregano"
                     aria-label="Add ingredient"
                     name="ingredient"
                 />
-                <button>Add ingredient</button>
+                <button className="font-inter rounded-md border-none bg-[#141413] text-[#FAFAF8] font-medium py-[0.8rem] px-[1.8rem] before:content-['+'] before:mr-2">Add ingredient</button>
+
             </form>
-            {ingredients.length > 0 && <section>
-                <h2>Ingredients on hand:</h2>
-                <ul className="ingredients-list" aria-live="polite">{ingredientsListItems}</ul>
-                {ingredients.length > 3 && <div className="get-recipe-container">
-                    <div>
-                        <h3>Ready for a recipe?</h3>
-                        <p>Generate a recipe from your list of ingredients.</p>
-                    </div>
-                    <button>Get a recipe</button>
-                </div>}
-            </section>}
+
+            {ingredients.length > 0 &&
+                <IngredientsList
+                    ref = {recipeSection}
+                    ingredients={ingredients}
+                    getRecipe={getRecipe}
+                />
+            }
+
+            {recipeShown && <ClaudeRecipe />}
         </main>
     )
 }
