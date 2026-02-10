@@ -1,7 +1,6 @@
 import React, { useRef } from "react"
 import IngredientsList from "./components/IngredientsList"
 import ClaudeRecipe from "./components/ClaudeRecipe"
-import { getRecipeFromMistral } from "./ai"
 
 export default function MainContent() {
     const [ingredients, setIngredients] = React.useState([])
