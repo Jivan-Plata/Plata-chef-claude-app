@@ -12,7 +12,7 @@ export default function IngredientsList(props) {
             <ul className="space-y-4 text-[#475467]" aria-live="polite">{ingredientsListItems}</ul>
 
             {props.ingredients.length > 3 && 
-            <div className="bg-[#f0efeb] rounded-[10px] w-full flex flex-row justify-between items-center py-[clamp(1rem,2vw+0.5rem,2rem)] px-[clamp(1rem,2vw+1.25rem,3rem)] my-8">
+            <div className="bg-[#f0efeb] rounded-[10px] w-full flex flex-col text-center justify-center items-center sm:flex-row sm:text-left sm:justify-between gap-4 py-[clamp(1rem,2vw+0.5rem,2rem)] px-[clamp(1rem,2vw+1.25rem,3rem)] my-8">
                 
                 <div className="flex flex-col gap-2" ref = {props.ref}>
                     <h3 className="text-lg font-medium">Ready for a recipe?</h3>
