@@ -25,7 +25,7 @@ export default function MainContent() {
       
     React.useEffect(() => {
         if (recipeSection.current !== null && recipe !== "") {
-
+            
             recipeSection.current.scrollIntoView({behavior: "smooth"})   
         }
     }, [recipe])
@@ -36,7 +36,7 @@ export default function MainContent() {
     }
 
     return (
-        <main className="bg-[#fafaf8] py-[clamp(2rem,2vw+1.25rem,3rem)] px-[clamp(2rem,4vw+1rem,4rem)] rounded-b-xl w-full flex flex-col gap-8">
+        <main className="bg-[#FAFAF8] py-[clamp(2rem,2vw+1.25rem,3rem)] px-[clamp(2rem,4vw+1rem,4rem)] rounded-b-xl w-full flex flex-col gap-8">
 
             <form action={addIngredient} className="flex justify-between flex-wrap gap-8 w-full">
 
