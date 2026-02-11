@@ -5,9 +5,12 @@ import ClaudeRecipe from "./components/ClaudeRecipe"
 export default function MainContent() {
     const [ingredients, setIngredients] = React.useState([])
     const [recipe, setRecipe] = React.useState("")
+    const [isGenerating, setIsGenerating] = React.useState(false)
     const recipeSection = useRef(null)
 
     async function getRecipe() {
+        setIsGenerating(prevGenerating => (!prevGenerating))
+
         const response = await fetch("/.netlify/functions/get-recipe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -16,10 +19,13 @@ export default function MainContent() {
       
         const data = await response.json()
         setRecipe(data.recipe)
+        
+        setIsGenerating(prevGenerating => (!prevGenerating))
       }
       
     React.useEffect(() => {
-        if (recipeSection.current !== null) {
+        if (recipeSection.current !== null && recipe !== "") {
+
             recipeSection.current.scrollIntoView({behavior: "smooth"})   
         }
     }, [recipe])
@@ -50,6 +56,7 @@ export default function MainContent() {
                     ref = {recipeSection}
                     ingredients={ingredients}
                     getRecipe={getRecipe}
+                    isGenerating = {isGenerating}
                 />
             }
 
