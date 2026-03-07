@@ -49,6 +49,8 @@ export default function MainContent() {
                 />
                 <button className="font-inter rounded-md border-none bg-[#141413] text-[#FAFAF8] font-medium py-[0.8rem] px-[1.8rem] before:content-['+'] before:mr-2">Add ingredient</button>
 
+                <p> • Add at least 4 ingredients, and Chef Claude will generate a recipe for you! </p>
+
             </form>
 
             {ingredients.length > 0 &&
