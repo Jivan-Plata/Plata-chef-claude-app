@@ -35,6 +35,11 @@ export default function MainContent() {
         setIngredients(prevIngredients => [...prevIngredients, newIngredient])
     }
 
+    function newRecipe() {
+        setIngredients([])
+        setRecipe("")
+    }
+
     return (
         <main className="bg-[#FAFAF8] py-[clamp(2rem,2vw+1.25rem,3rem)] px-[clamp(2rem,4vw+1rem,4rem)] rounded-b-xl w-full flex flex-col gap-8">
 
@@ -63,6 +68,9 @@ export default function MainContent() {
             }
 
             {recipe && <ClaudeRecipe recipe = {recipe} />}
+
+            {recipe && <button className="border-none rounded-md bg-[#d17557] text-white py-[0.8rem] px-[clamp(1.3rem,1.118rem+0.909vw,1.8rem)] font-inter text-sm cursor-pointer self-center" onClick={() => newRecipe()}> New Recipe </button>}
+
         </main>
     )
 }

@@ -14,7 +14,7 @@ export default function ClaudeRecipe(props) {
                         ul: ({node, ...props}) => <ul className="list-disc list-inside space-y-4 mb-8 ml-4" {...props} />,
 
                         // 3. Instructions List (Ordered)
-                        ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-4 mb-8 ml-4" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside space-y-4 mb-8 ml-4 last:mb-0" {...props} />,
 
                         // 4. List Items: The "pl-2" gives just enough breathing room
                         li: ({node, ...props}) => <li className="pl-2" {...props} />,
